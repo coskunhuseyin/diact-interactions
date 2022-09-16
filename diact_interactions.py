@@ -116,26 +116,29 @@ def displayRT(M, output_df, key_val):
         output_df.loc[ts[1],ts[2]] = 1
         output_df.loc[ts[0],ts[2]] = 1
 
-    if diact == "transfer": 
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the {diact} (total) demand from sector {ts[0]} directly and indirectly by sector {ts[1]} induced by \
-            {ts[2]}(sector {ts[1]}) = \${output_df.loc[ts[1],ts[2]]:.2f} million is \${M_df[ts[1]][ts[0]]:.4f} million. In other words, \
-            sector {ts[1]} needs \${M_df[ts[1]][ts[0]]:.4f} million worth of {diact} (total) input from sector {ts[0]} to meet \
-            the {inputlevelname} of \${output_df.loc[ts[1],ts[2]]:.2f} million from itself. Similarly, the {diact} (total) demand \
-            from sector {ts[1]} directly and indirectly by sector {ts[0]} induced by \
-            {ts[2]}(sector {ts[0]}) = \${output_df.loc[ts[0],ts[2]]:.2f} million is \${M_df[ts[0]][ts[1]]:.4f} million. \
-            In other words, sector {ts[0]} needs \${M_df[ts[0]][ts[1]]:.4f} million worth of {diact} (total) input from \
-            {ts[1]} to meet the {inputlevelname} of \${output_df.loc[ts[0],ts[2]]:.2f} million from itself.') 
-    else: 
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the total demand from sector {ts[0]} {diact}ly through other sectors by sector {ts[1]} induced by \
-            {ts[2]}(sector {ts[1]}) = \${output_df.loc[ts[1],ts[2]]:.2f} million is \${M_df[ts[1]][ts[0]]:.4f} million. In other words, \
-            sector {ts[1]} needs \${M_df[ts[1]][ts[0]]:.4f} million worth of {diact} input from sector {ts[0]} to meet \
-            the {inputlevelname} of \${output_df.loc[ts[1],ts[2]]:.2f} million from itself. Similarly, the total demand \
-            from sector {ts[1]} {diact}ly through other sectors by sector {ts[0]} induced by \
-            {ts[2]}(sector {ts[0]}) = \${output_df.loc[ts[0],ts[2]]:.2f} million is \${M_df[ts[0]][ts[1]]:.4f} million. \
-            In other words, sector {ts[0]} needs \${M_df[ts[0]][ts[1]]:.4f} million worth of {diact} input from \
-            {ts[1]} to meet the {inputlevelname} of \${output_df.loc[ts[0],ts[2]]:.2f} million from itself.') 
+    try:
+        if diact == "transfer": 
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the {diact} (total) demand from sector {ts[0]} directly and indirectly by sector {ts[1]} induced by \
+                {ts[2]}(sector {ts[1]}) = \${output_df.loc[ts[1],ts[2]]:.2f} million is \${M_df[ts[1]][ts[0]]:.4f} million. In other words, \
+                sector {ts[1]} needs \${M_df[ts[1]][ts[0]]:.4f} million worth of {diact} (total) input from sector {ts[0]} to meet \
+                the {inputlevelname} of \${output_df.loc[ts[1],ts[2]]:.2f} million from itself. Similarly, the {diact} (total) demand \
+                from sector {ts[1]} directly and indirectly by sector {ts[0]} induced by \
+                {ts[2]}(sector {ts[0]}) = \${output_df.loc[ts[0],ts[2]]:.2f} million is \${M_df[ts[0]][ts[1]]:.4f} million. \
+                In other words, sector {ts[0]} needs \${M_df[ts[0]][ts[1]]:.4f} million worth of {diact} (total) input from \
+                {ts[1]} to meet the {inputlevelname} of \${output_df.loc[ts[0],ts[2]]:.2f} million from itself.') 
+        else: 
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the total demand from sector {ts[0]} {diact}ly through other sectors by sector {ts[1]} induced by \
+                {ts[2]}(sector {ts[1]}) = \${output_df.loc[ts[1],ts[2]]:.2f} million is \${M_df[ts[1]][ts[0]]:.4f} million. In other words, \
+                sector {ts[1]} needs \${M_df[ts[1]][ts[0]]:.4f} million worth of {diact} input from sector {ts[0]} to meet \
+                the {inputlevelname} of \${output_df.loc[ts[1],ts[2]]:.2f} million from itself. Similarly, the total demand \
+                from sector {ts[1]} {diact}ly through other sectors by sector {ts[0]} induced by \
+                {ts[2]}(sector {ts[0]}) = \${output_df.loc[ts[0],ts[2]]:.2f} million is \${M_df[ts[0]][ts[1]]:.4f} million. \
+                In other words, sector {ts[0]} needs \${M_df[ts[0]][ts[1]]:.4f} million worth of {diact} input from \
+                {ts[1]} to meet the {inputlevelname} of \${output_df.loc[ts[0],ts[2]]:.2f} million from itself.') 
+    except:
+        st.error('Please fill in the required information on the left panel.')
 
     if rt == "r":
         output_df.loc[ts[1],ts[2]] = o_temp_12
@@ -153,23 +156,26 @@ def displayUM(M_df, key_val):
         mime = 'text/csv',
         key = key_val+"_matrix") 
 
-    if key_val == "U":
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the monetary value of the primary product of sector {ts[0]} required by sector {ts[1]} \
-            is \${float(M_df[ts[1]][ts[0]]):.0f} million in the year {year}.')
-    elif key_val == "M":
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the monetary value of the primary product of sector {ts[1]} produced by sector {ts[0]} \
-            is \${float(M_df[ts[1]][ts[0]]):.0f} million in the year {year}.')
-    elif key_val == "A":
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the monetary value of the primary product of sector {ts[0]} directly required by sector {ts[1]} \
-            per unit gross demand from itself is \${M_df[ts[1]][ts[0]]:.4f} million in the year {year}.')
-    elif key_val == "N":    
-        st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
-            the total monetary value of the primary product of sector {ts[0]} required by sector {ts[1]} \
-            per unit final demand from itself is \${M_df[ts[1]][ts[0]]:.4f} million in the year {year}. \
-            The cumulative requirements matrix is called the total requirements matrix in the input-output literature.')
+    try:
+        if key_val == "U":
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the monetary value of the primary product of sector {ts[0]} required by sector {ts[1]} \
+                is \${float(M_df[ts[1]][ts[0]]):.0f} million in the year {year}.')
+        elif key_val == "M":
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the monetary value of the primary product of sector {ts[1]} produced by sector {ts[0]} \
+                is \${float(M_df[ts[1]][ts[0]]):.0f} million in the year {year}.')
+        elif key_val == "A":
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the monetary value of the primary product of sector {ts[0]} directly required by sector {ts[1]} \
+                per unit gross demand from itself is \${M_df[ts[1]][ts[0]]:.4f} million in the year {year}.')
+        elif key_val == "N":    
+            st.write(f'**Interpretation of the matrix entries:** As an example, the results indicate that \
+                the total monetary value of the primary product of sector {ts[0]} required by sector {ts[1]} \
+                per unit final demand from itself is \${M_df[ts[1]][ts[0]]:.4f} million in the year {year}. \
+                The cumulative requirements matrix is called the total requirements matrix in the input-output literature.')
+    except:
+        st.error("""**Please fill in the required information on the left panel.** """)
 
 @st.cache
 def dist_matrices():
@@ -323,7 +329,7 @@ with st.sidebar:
             elif sc == "composite":
                 ts.append('tau')
         except:
-            st.error("""**Please choose two sectors from the dropdown menu.** """)            
+            st.error("""**Please fill in the required information on the left panel.** """)    
 
         st.write("As you change these options, the results on the right hand panel will automatically be updated accordingly.") 
         st.write(" ") 
@@ -405,12 +411,15 @@ try:
     Ta_df_ts = dict()
     Tc_df_ts = dict()
     Tt_df_ts = dict()
-    for years in sheets:
-        Td_df_ts[years] = Td_df[years].loc[ts[0],ts[1]]
-        Ti_df_ts[years] = Ti_df[years].loc[ts[0],ts[1]]
-        Ta_df_ts[years] = Ta_df[years].loc[ts[0],ts[1]]
-        Tc_df_ts[years] = Tc_df[years].loc[ts[0],ts[1]]        
-        Tt_df_ts[years] = Tt_df[years].loc[ts[0],ts[1]]
+    try: 
+        for years in sheets:
+            Td_df_ts[years] = Td_df[years].loc[ts[0],ts[1]]
+            Ti_df_ts[years] = Ti_df[years].loc[ts[0],ts[1]]
+            Ta_df_ts[years] = Ta_df[years].loc[ts[0],ts[1]]
+            Tc_df_ts[years] = Tc_df[years].loc[ts[0],ts[1]]        
+            Tt_df_ts[years] = Tt_df[years].loc[ts[0],ts[1]]
+    except:
+        st.error("""**Please fill in the required information on the left panel.** """)
 
     with results:
         st.subheader("The requirements and transactions matrices")
@@ -421,137 +430,141 @@ try:
             induced by the given final or gross demands. The pairwise diact demand interactions between the two given \
             sectors from the year {year_mx[0]} to {year_mx[1]} are also graphically presented. Moreover, \
             the total {sc} demands from and by these two sectors for the year {year} are depicted below as well.")
-        
-        graphs_t, distributions_t, transactions_t = st.tabs(["Graphical representations", "Requirements matrix", "Transactions matrix"])
 
-        with graphs_t: 
-            # The pairwise interactions are visualized in this section. 
+        try:        
+            graphs_t, distributions_t, transactions_t = st.tabs(["Graphical representations", "Requirements matrix", "Transactions matrix"])
 
-            if len(ts)<2:
-                st.subheader('Please fill in the required information on the left panel.')
-            elif len(sc)==0:
-                st.subheader('Please fill in the required information on the left panel.')
+            with graphs_t: 
+                # The pairwise interactions are visualized in this section. 
 
-            col1, col2 = st.columns(2)
+                if len(ts)<2:
+                    st.error("""**Please fill in the required information on the left panel.** """)
+                elif len(sc)==0:
+                    st.error("""**Please fill in the required information on the left panel.** """)
 
-            with col1:
-                st.caption(f"**Dynamics of the given pairwise {sc} {diact} interaction \
-                    induced by the given {inputlevelname}.**")
+                col1, col2 = st.columns(2)
 
-                def pairwise_dit(T_ts):
-                    T_ts_df = pd.DataFrame.from_dict(T_ts, orient='index', columns=[f"{diact} demand"])
-                    T_ts_df.insert(0, "year", sheets, True)
-                    return T_ts_df                    
-                
-                title_pdit=f"{sc} {diact} demand from sector {ts[0]} by sector {ts[1]}"
+                with col1:
+                    st.caption(f"**Dynamics of the given pairwise {sc} {diact} interaction \
+                        induced by the given {inputlevelname}.**")
+
+                    def pairwise_dit(T_ts):
+                        T_ts_df = pd.DataFrame.from_dict(T_ts, orient='index', columns=[f"{diact} demand"])
+                        T_ts_df.insert(0, "year", sheets, True)
+                        return T_ts_df                    
+                    
+                    title_pdit=f"{sc} {diact} demand from sector {ts[0]} by sector {ts[1]}"
+                    if diact == "direct":
+                        pairwise_df = pairwise_dit(Td_df_ts)
+                    elif diact == "indirect":
+                        pairwise_df = pairwise_dit(Ti_df_ts) 
+                    if diact == "acyclic":
+                        pairwise_df = pairwise_dit(Ta_df_ts)
+                    elif diact == "cycling":
+                        pairwise_df = pairwise_dit(Tc_df_ts) 
+                    elif diact == "transfer":
+                        pairwise_df = pairwise_dit(Tt_df_ts)
+
+                    pairwise_chart = alt.Chart(pairwise_df).mark_line().encode(
+                        x = alt.X('year', 
+                            axis=alt.Axis(
+                            grid=False,
+                            values=['2000','2005','2010','2015','2020'])),
+                        y = alt.Y(pairwise_df.columns[1], 
+                            axis=alt.Axis(title=title_pdit)),
+                        tooltip = ["year", pairwise_df.columns[1]]
+                            ).properties(width=330, height=360)
+
+                    st.altair_chart(pairwise_chart, use_container_width=False)
+
+                with col2:
+                    st.caption(f"**The {sc} {diact} demands by and from the given sectors in {year} \
+                        induced by the given {inputlevelname}.**")
+
+                    df_codes_df = pd.DataFrame(df_codes, index=df_codes, columns=["sectors"])
+                    sects = pd.concat([df_codes_df, df_codes_df], axis=0)
+                    from_series = pd.DataFrame(["from"]*15, index=df_codes, columns=["demand"])
+                    by_series = pd.DataFrame(["by"]*15, index=df_codes, columns=["demand"])
+                    def tau_dit(T_df):
+                        tau_df = {}
+                        tau_ts_df = {}
+                        for years in sheets:
+                            tau_df_out = pd.DataFrame(T_df[years].sum(axis=1), index = df_codes, columns = [f"total {diact} demand"])
+                            tau_df_out = pd.concat([from_series, tau_df_out], axis=1)
+                            tau_df_in = pd.DataFrame(T_df[years].sum(axis=0), index = df_codes, columns = [f"total {diact} demand"])
+                            tau_df_in = pd.concat([by_series, tau_df_in], axis=1)
+                            tau_final = pd.concat([tau_df_out, tau_df_in], axis=0)
+                            tau_df[years] = pd.concat([sects,tau_final], axis=1)
+                            tau_ts_df[years] = tau_df[years].loc[ts[:2]]
+                        return tau_ts_df, tau_df 
+
+                    title_dit=f"total {sc} {diact} demands by and from sectors {ts[0]} and {ts[1]}"                    
+                    if diact == "direct":                    
+                        tau_ts_df, tau_df = tau_dit(Td_df)                    
+                    elif diact == "indirect":
+                        tau_ts_df, tau_df = tau_dit(Ti_df)                    
+                    if diact == "acyclic":
+                        tau_ts_df, tau_df = tau_dit(Ta_df)                    
+                    elif diact == "cycling":
+                        tau_ts_df, tau_df = tau_dit(Tc_df)                    
+                    elif diact == "transfer": 
+                        tau_ts_df, tau_df = tau_dit(Tt_df)        
+
+                    # stored variables into a pickle file for later use:
+                    import pickle
+                    file_name = f"{sc}_{diact}_{ts[0]}_{ts[1]}_transferred_data"
+                    # Open the file for writing
+                    with open(file_name,'wb') as my_file_obj:
+                        pickle.dump([pairwise_df, tau_ts_df, Td_df, Ti_df, Ta_df, Tc_df, Tt_df, \
+                            Nd_df, Ni_df, Na_df, Nc_df, Nt_df], my_file_obj)
+
+                    tau_chart = alt.Chart(tau_ts_df[year]).mark_bar().encode(
+                        alt.Column('sectors'), 
+                        alt.X('demand'),
+                        alt.Y(tau_ts_df[year].columns[2], title=title_dit, axis=alt.Axis(grid=False)),
+                        alt.Color('demand'),
+                        tooltip = [tau_ts_df[year].columns[2]]
+                        ).properties(width=110, height=230)
+    
+                    st.altair_chart(tau_chart, use_container_width=False)
+
+            with distributions_t: 
+                # The direct, indirect, acyclic, cycling, transfer requirements induced by unit final demand vector, $Nd$, $Ni$, $Na$, $Nc$, and $Nt$, can be computed  
+                # and these matrices can be expressed in dataframe format as follows:
+
+                rt = "r"
                 if diact == "direct":
-                    pairwise_df = pairwise_dit(Td_df_ts)
+                    displayRT(Nd[year], output_df, "Nd")
                 elif diact == "indirect":
-                    pairwise_df = pairwise_dit(Ti_df_ts) 
-                if diact == "acyclic":
-                    pairwise_df = pairwise_dit(Ta_df_ts)
+                    displayRT(Ni[year], output_df, "Ni")
+                elif diact == "acyclic":
+                    displayRT(Na[year], output_df, "Na")
                 elif diact == "cycling":
-                    pairwise_df = pairwise_dit(Tc_df_ts) 
+                    displayRT(Nc[year], output_df, "Nc")
                 elif diact == "transfer":
-                    pairwise_df = pairwise_dit(Tt_df_ts)
+                    displayRT(Nt[year], output_df, "Nt")
 
-                pairwise_chart = alt.Chart(pairwise_df).mark_line().encode(
-                    x = alt.X('year', 
-                        axis=alt.Axis(
-                        grid=False,
-                        values=['2000','2005','2010','2015','2020'])),
-                    y = alt.Y(pairwise_df.columns[1], 
-                        axis=alt.Axis(title=title_pdit)),
-                    tooltip = ["year", pairwise_df.columns[1]]
-                        ).properties(width=330, height=360)
+            with transactions_t:
+                # The direct, indirect, transfer demand distributions induced by given final demand vector $y$, $Td$, $Ti$, and $Tt$, can be computed 
+                # and these matrices can be expressed in dataframe format as follows:
 
-                st.altair_chart(pairwise_chart, use_container_width=False)
-
-            with col2:
-                st.caption(f"**The {sc} {diact} demands by and from the given sectors in {year} \
-                    induced by the given {inputlevelname}.**")
-
-                df_codes_df = pd.DataFrame(df_codes, index=df_codes, columns=["sectors"])
-                sects = pd.concat([df_codes_df, df_codes_df], axis=0)
-                from_series = pd.DataFrame(["from"]*15, index=df_codes, columns=["demand"])
-                by_series = pd.DataFrame(["by"]*15, index=df_codes, columns=["demand"])
-                def tau_dit(T_df):
-                    tau_df = {}
-                    tau_ts_df = {}
-                    for years in sheets:
-                        tau_df_out = pd.DataFrame(T_df[years].sum(axis=1), index = df_codes, columns = [f"total {diact} demand"])
-                        tau_df_out = pd.concat([from_series, tau_df_out], axis=1)
-                        tau_df_in = pd.DataFrame(T_df[years].sum(axis=0), index = df_codes, columns = [f"total {diact} demand"])
-                        tau_df_in = pd.concat([by_series, tau_df_in], axis=1)
-                        tau_final = pd.concat([tau_df_out, tau_df_in], axis=0)
-                        tau_df[years] = pd.concat([sects,tau_final], axis=1)
-                        tau_ts_df[years] = tau_df[years].loc[ts[:2]]
-                    return tau_ts_df, tau_df 
-
-                title_dit=f"total {sc} {diact} demands by and from sectors {ts[0]} and {ts[1]}"                    
-                if diact == "direct":                    
-                    tau_ts_df, tau_df = tau_dit(Td_df)                    
+                rt = "t"
+                if diact == "direct":
+                    displayRT(Td[year], output_df, "Td")
                 elif diact == "indirect":
-                    tau_ts_df, tau_df = tau_dit(Ti_df)                    
-                if diact == "acyclic":
-                    tau_ts_df, tau_df = tau_dit(Ta_df)                    
+                    displayRT(Ti[year], output_df, "Ti")
+                elif diact == "acyclic":
+                    displayRT(Ta[year], output_df, "Ta")
                 elif diact == "cycling":
-                    tau_ts_df, tau_df = tau_dit(Tc_df)                    
-                elif diact == "transfer": 
-                    tau_ts_df, tau_df = tau_dit(Tt_df)        
+                    displayRT(Tc[year], output_df, "Tc")
+                elif diact == "transfer":
+                    displayRT(Tt[year], output_df, "Tt")
 
-                # stored variables into a pickle file for later use:
-                import pickle
-                file_name = f"{sc}_{diact}_{ts[0]}_{ts[1]}_transferred_data"
-                # Open the file for writing
-                with open(file_name,'wb') as my_file_obj:
-                    pickle.dump([pairwise_df, tau_ts_df, Td_df, Ti_df, Ta_df, Tc_df, Tt_df, \
-                        Nd_df, Ni_df, Na_df, Nc_df, Nt_df], my_file_obj)
-
-                tau_chart = alt.Chart(tau_ts_df[year]).mark_bar().encode(
-                    alt.Column('sectors'), 
-                    alt.X('demand'),
-                    alt.Y(tau_ts_df[year].columns[2], title=title_dit, axis=alt.Axis(grid=False)),
-                    alt.Color('demand'),
-                    tooltip = [tau_ts_df[year].columns[2]]
-                    ).properties(width=110, height=230)
-  
-                st.altair_chart(tau_chart, use_container_width=False)
-
-        with distributions_t: 
-            # The direct, indirect, acyclic, cycling, transfer requirements induced by unit final demand vector, $Nd$, $Ni$, $Na$, $Nc$, and $Nt$, can be computed  
-            # and these matrices can be expressed in dataframe format as follows:
-
-            rt = "r"
-            if diact == "direct":
-                displayRT(Nd[year], output_df, "Nd")
-            elif diact == "indirect":
-                displayRT(Ni[year], output_df, "Ni")
-            elif diact == "acyclic":
-                displayRT(Na[year], output_df, "Na")
-            elif diact == "cycling":
-                displayRT(Nc[year], output_df, "Nc")
-            elif diact == "transfer":
-                displayRT(Nt[year], output_df, "Nt")
-
-        with transactions_t:
-            # The direct, indirect, transfer demand distributions induced by given final demand vector $y$, $Td$, $Ti$, and $Tt$, can be computed 
-            # and these matrices can be expressed in dataframe format as follows:
-
-            rt = "t"
-            if diact == "direct":
-                displayRT(Td[year], output_df, "Td")
-            elif diact == "indirect":
-                displayRT(Ti[year], output_df, "Ti")
-            elif diact == "acyclic":
-                displayRT(Ta[year], output_df, "Ta")
-            elif diact == "cycling":
-                displayRT(Tc[year], output_df, "Tc")
-            elif diact == "transfer":
-                displayRT(Tt[year], output_df, "Tt")
+        except:
+            st.error("""**Please fill in the required information on the left panel.** """)
 
 except NameError:
-        st.subheader('Please fill in the required information on the left panel.')
+        st.error("""**Please fill in the required information on the left panel.** """)
 
 finally:
     
