@@ -1,3 +1,5 @@
+# diact-interactions
+
 The **diact interactions** application is designed for the quantification of the pairwise direct, indirect, acyclic, cycling, and total (diact) interactions between any two sectors in the US economy based on the **system decomposition theory.** The interactive application can be reached at the link [here](https://www).
 
 **The diact interactions:**
